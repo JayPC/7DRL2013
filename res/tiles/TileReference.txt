@@ -1,0 +1,40 @@
+ID - ImageID - TileName
+0  - 0       - Null
+1  - 1       - Grass
+2  - 2       - UpperLeftCorner
+3  - 3       - UpperRightCorner
+4  - 4       - BottomLeftCorner
+5  - 5       - BottomRightCorner
+6  - 6       - HorizontalWall
+7  - 7       - VerticalWall
+8  - 8       - TileFloor
+9  - 9       - Up +
+10 - 10      - Down +
+11 - 11      - Left +
+12 - 12      - Right +
+13 - 13      - center +
+14 - 14      - Chair
+15 - 15      - TV
+16 - 16      - Table
+17 - 17      - Lamp
+18 - 18      - Crate1
+19 - 19      - Crate2
+20 - 20      - Crate3
+21 - 21      - Tomb1
+22 - 22      - Tomb2
+23 - 23      - Chest floor
+24 - 23      - Chest grass
+25 - 25      - Pavement
+25 - 25      - Sidewalk_Vert
+25 - 25      - Sidewalk_Horiz
+25 - 25      - Sidewalk_UL_Corner
+25 - 25      - Sidewalk_UR_Corner
+25 - 25      - Sidewalk_BL_Corner
+25 - 25      - Sidewalk_BR_Corner
+25 - 25      - Pavement
+25 - 25      - Pavement
+25 - 25      - Pavement
+25 - 25      - Pavement
+25 - 25      - Pavement
+25 - 25      - Pavement
+25 - 25      - Pavement
