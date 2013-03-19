@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class World {
@@ -42,27 +44,23 @@ public class World {
 	public void renderWorld(Graphics g){
 		
 		g.setDrawMode(Graphics.MODE_NORMAL);
-		
 		for(int i = currentMapY-2; i<= currentMapY+2; i++){
 			for(int c = currentMapX-2; c <= currentMapX+2; c++){
 				gameMaps.get("X"+(c)+"Y"+(i)).renderMap(g);
 			}
 		}
-		for(int i = currentMapY-2; i<= currentMapY+2; i++){
-			for(int c = currentMapX-2; c <= currentMapX+2; c++){
-				renderZombies(g);
-			}
-		}
 		
+		renderZombies(g);
 	}
 
 	public void renderWorldHUD(Graphics g){
 		g.drawString("Points! - " + points,0,0);
 		
 	}
-	public void updateWorld(int deltaTime, Player player, int currentMapX, int currentMapY){
-		this.currentMapX = currentMapX;
-		this.currentMapY = currentMapY;
+	
+	public void updateWorld(int deltaTime, Player player, int sCurrentMapX, int sCurrentMapY){
+		currentMapX = sCurrentMapX;
+		currentMapY = sCurrentMapY;
 		
 		for(int i = currentMapY-2; i<= currentMapY+2; i++){
 			for(int c = currentMapX-2; c <= currentMapX+2; c++){
@@ -80,33 +78,38 @@ public class World {
 		checkZombieBulletCollision(deltaTime,player);
 	}
 	
-	public boolean worldCollision(Rectangle oneAxisRect){
+	public boolean worldCollision(Shape collisionShape){
 		boolean test = false;
-		for(int i = currentMapY; i<= currentMapY; i++){
-			for(int c = currentMapX; c <= currentMapX; c++){
-				if(gameMaps.get("X"+(c)+"Y"+(i)) != null){
-					
-					test = gameMaps.get("X"+(c)+"Y"+(i)).checkCollision(oneAxisRect);
+		
+		for(int i = currentMapY-2; i<= currentMapY+2; i++){
+			for(int c = currentMapX-2; c <= currentMapX+2; c++){
+				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == false){
+					test = gameMaps.get("X"+(c)+"Y"+(i)).checkMapRectCollision(collisionShape);
 				}else{
-					System.out.println("Why you getting a null map");
+					
 				}
 			}
 		}
 		return test;
 	}
-
-	
-	public void playerFireBullet(int deltaTime, Player playerNum){
+	public boolean worldCollision(Line collisionShape){
+		boolean test = false;
 		
-		for(int i = currentMapY; i<= currentMapY; i++){
-			for(int c = currentMapX; c <= currentMapX; c++){
-				if(gameMaps.get("X"+(c)+"Y"+(i)) != null){
-					bulletList.add(new Bullet(playerNum.location.copy(),playerNum.gunRange,(float) (Math.toRadians(playerNum.rotation)-Math.PI)));
+		for(int i = currentMapY-2; i<= currentMapY+2; i++){
+			for(int c = currentMapX-2; c <= currentMapX+2; c++){
+				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == false){
+					//System.out.println(test);
+					test = gameMaps.get("X"+(c)+"Y"+(i)).checkMapRectCollision(collisionShape);
+				}else{
+					System.out.println("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 				}
 			}
 		}
-		
-		
+		return test;
+	}
+	
+	public void playerFireBullet(int deltaTime, Player playerNum){
+		bulletList.add(new Bullet(playerNum.location.copy(),playerNum.gunRange,(float) (Math.toRadians(playerNum.rotation)-Math.PI)));
 	}
 	
 	public void renderZombies(Graphics g){

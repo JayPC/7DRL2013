@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Line;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -17,27 +18,28 @@ public class Player {
 	Vector2f movementVector = new Vector2f(0,0);
 	Vector2f currentDirection = new Vector2f(0,0);
 
-	int currentMinDamage = 10;
-	int currentScaleDamage = 100;
-	int gunRange = 400;
+	int currentMinDamage;
+	int currentScaleDamage;
+	int gunRange;
 	
-	int directionAmount = 1;
-	float magnitude = 0f;
-	float speed = 5;
-	float rotation = 0;
+	int directionAmount;
+	float magnitude;
+	float speed;
+	float rotation;
 	boolean up,down,left,right;
 	Rectangle playerRect;
 	Rectangle xAxisRect;
 	Rectangle yAxisRect;
 	Line moveLine;
+	Polygon playerCross;
 	
 	Image playerImage = Game.loadedResources.player;
 	
-	int acuracy = 0;
+	int acuracy;
 
-	int hunger = 10000;
-	int health = 5000;
-	int battery = 0;
+	int hunger;
+	int health;
+	int battery;
 	
 	public Player(int x, int y){
 
@@ -49,8 +51,8 @@ public class Player {
 		movementVector = new Vector2f(0,0);
 		currentDirection = new Vector2f(0,0);
 
-		currentMinDamage = 10;
-		currentScaleDamage = 100;
+		currentMinDamage = 150;
+		currentScaleDamage = 300;
 		gunRange = 400;
 		
 		directionAmount = 1;
@@ -65,7 +67,16 @@ public class Player {
 		playerRect = new Rectangle(x,y,playerImage.getWidth(), playerImage.getHeight());
 		xAxisRect = new Rectangle(x,y,playerImage.getWidth()-5, playerImage.getHeight()-5);
 		yAxisRect = new Rectangle(x,y,playerImage.getWidth()-5, playerImage.getHeight()-5);
-		moveLine = new Line(0,0,0,0);
+		moveLine = new Line(x-playerImage.getWidth(),y-playerImage.getHeight(),x-playerImage.getWidth(),y-playerImage.getHeight());
+		playerCross = new Polygon();
+		playerCross.setAllowDuplicatePoints(true);
+		
+		playerCross.addPoint(x, y);
+		playerCross.addPoint(x+playerImage.getWidth(), y+playerImage.getHeight());
+		playerCross.addPoint(x+playerImage.getWidth(), y);
+		playerCross.addPoint(x, y+playerImage.getHeight());
+		playerCross.addPoint(x, y);
+		
 		playerImage = Game.loadedResources.player;
 		
 		acuracy = 0;
@@ -78,23 +89,29 @@ public class Player {
 		boolean xOk = false;
 		boolean yOk = false;
 		while(xOk == false && yOk == false){
-			System.out.println(xOk);
-			System.out.println(yOk);
-			if(!xOk){
-				x += (Math.floor(Math.random()*10))*32;
-				System.out.println(x);
-				xAxisRect.setCenterX(x);
-				xOk = !GameplayState.gameWorld.worldCollision(xAxisRect);
+			System.out.println("TestingAgain");
+			if(GameplayState.gameWorld.worldCollision(moveLine) && GameplayState.gameWorld.worldCollision(playerCross)){
+				if(!xOk){
+					x += (Math.floor(Math.random()*10))*32;
+					xOk = !GameplayState.gameWorld.worldCollision(xAxisRect);
+				}
+				if(!yOk){
+					y += (Math.floor(Math.random()*10))*32;
+					yOk = !GameplayState.gameWorld.worldCollision(yAxisRect);
+				}
+			}else{
+				xOk = true;
+				yOk = true;
 			}
-			if(!yOk){
-				y += (Math.floor(Math.random()*10))*32;
-				System.out.println(y);
-				yAxisRect.setCenterY(y);
-				yOk = !GameplayState.gameWorld.worldCollision(yAxisRect);
-			}
+			xAxisRect.setCenterX(x);
+			xAxisRect.setCenterY(y);
+			yAxisRect.setCenterX(x);
+			yAxisRect.setCenterY(y);
+			playerCross.setCenterX(x);
+			playerCross.setCenterY(y);
+			location.set(x, y);
 		}
-	}
-	
+	}	
 	public void update(GameContainer gc ,int deltaTime){
 		input = gc.getInput();
 		movement(deltaTime);
@@ -105,14 +122,22 @@ public class Player {
 	public void render(Graphics g){
 		playerImage.setRotation(rotation+90);
 		g.drawImage(playerImage, x-16-Game.cam.cameraX, y-16-Game.cam.cameraY);
+		g.translate(-Game.cam.cameraX, -Game.cam.cameraY);
+		g.draw(xAxisRect);
+		g.draw(yAxisRect);
+		g.draw(moveLine);
+		g.draw(playerCross);
+		g.resetTransform();
 	}
 	
 	public void renderHUD(Graphics g){
 		g.setColor(Color.white);
 		//g.drawString("" + health, 0, Game.cam.height-50);
-		//g.drawString("" + x, 100, Game.cam.height-50);
-		//g.drawString("" + y, 200, Game.cam.height-50);
-		//g.drawString("" + health, Game.cam.width-150, 50);
+		g.drawString("" + x/32, 100, Game.cam.height-70);
+		g.drawString("" + y/32, 200, Game.cam.height-70);
+		g.drawString("" + x, 100, Game.cam.height-50);
+		g.drawString("" + y, 200, Game.cam.height-50);
+		g.drawString("" + health, Game.cam.width-150, 50);
 		g.drawImage(Game.loadedResources.healthBack,Game.cam.width-205,15,Game.cam.width-95,40,0,0,120,24);
 		for(int i = 0; i <= (health/50);i++){
 			g.drawImage(Game.loadedResources.healthBar,i+Game.cam.width-200,20,i+Game.cam.width-199,35,0,0,1,50);
@@ -170,6 +195,8 @@ public class Player {
 			}
 		}
 		location.set(x,y);
+		playerCross.setCenterX(x);
+		playerCross.setCenterY(y);
 		offsetLocation.set(x-Game.cam.cameraX,y-Game.cam.cameraY);
 		Game.cam.updateCameraFromPlayer(location);
 		movementVector.x = 0;
@@ -207,7 +234,7 @@ public class Player {
 			location.y-=yVel;
 		}
 
-		System.out.println("Still Damaging Player");
+		//System.out.println("Still Damaging Player");
 		health -= (Math.random()*damageScale)+minDamage;
 	}
 }

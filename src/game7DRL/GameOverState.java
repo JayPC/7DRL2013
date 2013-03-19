@@ -36,7 +36,7 @@ public class GameOverState extends BasicGameState{
 		// TODO Auto-generated method stub
 		g.drawImage(deadImage,deadRect.getX(),deadRect.getY());
 		g.drawString("Points: " + GameplayState.gameWorld.points,deadRect.getX()+deadRect.getHeight()/2,deadRect.getY()+150);
-		g.drawString("Click to Restart the game",deadRect.getX()+deadRect.getHeight()/2,deadRect.getY()+170);
+		g.drawString("Spacebar to Restart the game",deadRect.getX()+deadRect.getHeight()/2,deadRect.getY()+170);
 		
 	}
 
@@ -45,7 +45,7 @@ public class GameOverState extends BasicGameState{
 			throws SlickException {
 		Input input = gc.getInput();
 		
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+		if(input.isKeyPressed(Input.KEY_SPACE)){
 			sbg.addState(new GameplayState(Game.state_gameplay.getID()));
 			Game.state_gameplay.init(gc, sbg);
 			sbg.enterState(Game.state_menu.getID());

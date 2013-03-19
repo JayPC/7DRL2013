@@ -35,21 +35,11 @@ public class Bullet {
 		 *decayTime = 1000/20 = 50 decay per update
 		 *deltaTime = 80 HighTimePerFrame
 		 *decayTime = 1000/80 = 12.5 decay per update
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
-		 *
 		 */
 		//System.out.println(deltaTime);
-		if(deltaTime >= 30){
-			liveTime-=(decayAmmount/30);
+		deltaTime /= 100;
+		if(deltaTime >= 5){
+			liveTime-=(decayAmmount/5);
 		}else{
 			liveTime-=(decayAmmount/deltaTime);
 		}

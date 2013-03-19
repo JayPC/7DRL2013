@@ -2,6 +2,8 @@ package game7DRL;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Line;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
@@ -30,6 +32,9 @@ public class Zombie {
 	float currentAngle = 0.0f;
 	float spriteRotation = 0;
 
+	Line moveLine;
+	Polygon zombieCross;
+	
 	int minDamage = 10;
 	int damageScale = 100;
 
@@ -48,7 +53,51 @@ public class Zombie {
 		zombieRect = new Rectangle(x,y,sprite.getWidth(), sprite.getHeight());
 		xAxisRect = new Rectangle(x,y,sprite.getWidth()-5, sprite.getHeight()-5);
 		yAxisRect = new Rectangle(x,y,sprite.getWidth()-5, sprite.getHeight()-5);
-	}
+		
+		moveLine = new Line(x-sprite.getWidth(),y-sprite.getHeight(),x-sprite.getWidth(),y-sprite.getHeight());
+		zombieCross = new Polygon();
+		zombieCross.setAllowDuplicatePoints(true);
+		
+		zombieCross.addPoint(x, y);
+		zombieCross.addPoint(x+sprite.getWidth(), y+sprite.getHeight());
+		zombieCross.addPoint(x+sprite.getWidth(), y);
+		zombieCross.addPoint(x, y+sprite.getHeight());
+		zombieCross.addPoint(x, y);
+		
+
+		boolean xOk = false;
+		boolean yOk = false;
+		while(xOk == false && yOk == false){
+			if(GameplayState.gameWorld.worldCollision(zombieCross)||
+					GameplayState.gameWorld.worldCollision(zombieRect)){
+				System.out.println("TestingAgain");
+				if(!xOk){
+					x += (Math.floor(Math.random()*10))*32;
+				}
+				if(!yOk){
+					y += (Math.floor(Math.random()*10))*32;
+				}
+			}else{
+				xOk = true;
+				yOk = true;
+			}
+			
+			if(!xOk && !yOk){
+				System.out.println("PlacmentFailed");
+			}
+			
+			xAxisRect.setCenterX(x);
+			xAxisRect.setCenterY(y);
+			yAxisRect.setCenterX(x);
+			yAxisRect.setCenterY(y);
+			zombieCross.setCenterX(x);
+			zombieCross.setCenterY(y);
+			zombieRect.setCenterX(x);
+			zombieRect.setCenterY(y);
+			location.set(x, y);
+		}
+	}	
+	
 	public void render(Graphics g){
 		
 		sprite.setRotation(spriteRotation);

@@ -2,15 +2,20 @@ package game7DRL;
 
 import java.util.ArrayList;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.GeomUtil;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
 
 public class Map {
 	int timeOfDay;
-	int populationDensity = 0;
+	int populationDensity = 500;
 	public Tile[][] tileMap;
 	int zombiePopulation = 0;
 	int mapX;
 	int mapY;
+	GeomUtil util;
 	
 	public ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	
@@ -30,7 +35,6 @@ public class Map {
 				}
 			}	
 		}
-	
 	}
 	
 	
@@ -38,26 +42,27 @@ public class Map {
 		
 	}
 	
-	public boolean checkCollision(Rectangle oneAxisRect){
+	public boolean checkMapRectCollision(Shape collisionShape){
+		int collWidth;
+		int collHeight;
+		int rectX;
+		int rectY;
 		boolean testBoolean = false;
+		//System.out.print("mapX: "+mapX+" MapY: "+mapY);
 		for(int i = 0; i <= tileMap[0].length-1; i++){
 			for(int c = 0; c <= tileMap.length-1; c++){
 				if(tileMap[c][i] != null){
-					if(tileMap[c][i].collisionTile !=null){
-						if(tileMap[c][i].hasCollision){
-							int collWidth = tileMap[c][i].collisionTile.getWidth();
-							int collHeight = tileMap[c][i].collisionTile.getHeight();
-							int mapOffsetX = mapX*GameplayState.MAP_WIDTH;
-							int mapOffsetY = mapY*GameplayState.MAP_HEIGHT;
-							Rectangle temp = new Rectangle((c*collWidth)+mapOffsetX,
-									(i*collHeight)+mapOffsetY,
-									collWidth,
-									collHeight);
+					if(tileMap[c][i].hasCollision){
+						collWidth = tileMap[c][i].getWidth();
+						collHeight = tileMap[c][i].getHeight();
+						
+						rectX = mapX*GameplayState.MAP_WIDTH+(c*collWidth);
+						rectY = mapY*GameplayState.MAP_HEIGHT+(i*collHeight);
 							
-							if(oneAxisRect.intersects(temp)){
-								testBoolean = true;
-								return testBoolean;
-							}
+						Rectangle temp = new Rectangle(rectX, rectY, collWidth,collHeight);
+						
+						if(collisionShape.intersects(temp)){
+							testBoolean = true;
 						}
 					}
 				}
@@ -66,6 +71,35 @@ public class Map {
 		//System.out.println("" + testBoolean);
 		return testBoolean;
 	}
+	
+	public Vector2f checkMapLineCollision(Line collisionShape){
+		int collWidth;
+		int collHeight;
+		int rectX;
+		int rectY;
+		boolean testBoolean = false;
+		//System.out.print("mapX: "+mapX+" MapY: "+mapY);
+		for(int i = 0; i <= tileMap[0].length-1; i++){
+			for(int c = 0; c <= tileMap.length-1; c++){
+				if(tileMap[c][i] != null){
+					if(tileMap[c][i].hasCollision){
+						collWidth = tileMap[c][i].getWidth();
+						collHeight = tileMap[c][i].getHeight();
+						rectX = mapX*GameplayState.MAP_WIDTH+(c*collWidth);
+						rectY = mapY*GameplayState.MAP_HEIGHT+(i*collHeight);
+						Rectangle temp = new Rectangle(rectX, rectY, collWidth,collHeight);
+						
+						if(collisionShape.intersects(temp)){
+							testBoolean = true;
+						}
+					}
+				}
+			}
+		}
+		//System.out.println("" + testBoolean);
+		return null;
+	}
+	
 	public void checkBulletCollision(Bullet addBullet){
 		bulletList.add(addBullet);
 	}

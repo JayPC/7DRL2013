@@ -25,14 +25,13 @@ public class GameplayState extends BasicGameState{
 	
 	public GameplayState(int sID){
 		id = sID;
+		gameWorld = new World(20,20);
+		player1 = new Player(80, 80);
 	}
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		
-		gameWorld = new World(20,20);
-		player1 = new Player(80, 80);
 		
 	}
 
@@ -42,7 +41,7 @@ public class GameplayState extends BasicGameState{
 		//gameMap.renderMap(g,0,0);
 		gameWorld.renderWorld(g);
 		player1.render(g);
-		lighting.render(g);
+		//lighting.render(g);
 		player1.renderHUD(g);
 		gameWorld.renderWorldHUD(g);
 	}

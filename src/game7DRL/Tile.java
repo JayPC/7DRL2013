@@ -5,6 +5,8 @@ import org.newdawn.slick.Image;
 
 public class Tile {
 	int tileID;
+	int height;
+	int width;
 	Image floorTile = null;
 	Image collisionTile = null;
 	Image aboveTile = null;
@@ -17,8 +19,18 @@ public class Tile {
 		collisionTile = collision;
 		aboveTile = above;
 		hasCollision = hasColl;
+		width = floorTile.getWidth();;
+		height = floorTile.getHeight();
+		
 	}
 	public Tile(){
+		
+	}
+	public int getWidth(){
+		return width;
+		
+	}public int getHeight(){
+		return height;
 		
 	}
 	
