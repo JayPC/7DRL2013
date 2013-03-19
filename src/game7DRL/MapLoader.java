@@ -78,8 +78,15 @@ public class MapLoader {
 			}else{
 				hasCollision = false;
 			}
+			int numHasBuColl = Integer.parseInt(br.readLine());
+			boolean hasBuCollision;
+			if(numHasBuColl == 1){
+				hasBuCollision = true;
+			}else{
+				hasBuCollision = false;
+			}
 			br.close();
-			allTiles.set(tileID, new Tile(tileID,tempFloor,tempCollision,tempOver, hasCollision));
+			allTiles.set(tileID, new Tile(tileID,tempFloor,tempCollision,tempOver, hasCollision, hasBuCollision));
 		}
 		allTiles.set(0, null);
 	}

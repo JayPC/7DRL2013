@@ -11,15 +11,17 @@ public class Tile {
 	Image collisionTile = null;
 	Image aboveTile = null;
 	boolean hasCollision = false;
+	boolean hasBulletCollision = false;
 	boolean showAboveTile = true;
 	
-	public Tile(int TileID, Image floor, Image collision, Image above, boolean hasColl){
+	public Tile(int TileID, Image floor, Image collision, Image above, boolean hasColl, boolean hasBuColl){
 		tileID = TileID;
 		floorTile = floor;
 		collisionTile = collision;
 		aboveTile = above;
 		hasCollision = hasColl;
-		width = floorTile.getWidth();;
+		hasBulletCollision = hasBuColl;
+		width = floorTile.getWidth();
 		height = floorTile.getHeight();
 		
 	}
