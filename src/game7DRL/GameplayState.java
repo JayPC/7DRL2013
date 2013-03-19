@@ -38,10 +38,9 @@ public class GameplayState extends BasicGameState{
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
-		//gameMap.renderMap(g,0,0);
 		gameWorld.renderWorld(g);
 		player1.render(g);
-		//lighting.render(g);
+		lighting.render(g);
 		player1.renderHUD(g);
 		gameWorld.renderWorldHUD(g);
 	}
@@ -50,7 +49,6 @@ public class GameplayState extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int deltaTime)
 			throws SlickException {
 		player1.update(gc, deltaTime);
-		//gameMap.update(deltaTime, player1);
 		
 		currentMapX = (int) Math.floor(player1.location.x/MAP_WIDTH);
 		currentMapY = (int) Math.floor(player1.location.y/MAP_HEIGHT);

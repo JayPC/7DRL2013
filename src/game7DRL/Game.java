@@ -31,6 +31,7 @@ public class Game extends StateBasedGame{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		cam = new Camera(0, 0, gc.getWidth(), gc.getHeight());
 		state_gameover = new GameOverState(2);
 		state_gameplay = new GameplayState(1);

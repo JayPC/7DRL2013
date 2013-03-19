@@ -71,7 +71,7 @@ public class World {
 				}
 			}
 		}
-		//addZombies(player);
+		addZombies(player);
 		updateZombies(deltaTime,player);
 		updateBullets(deltaTime,player);
 		checkZombiePlayerCollision(deltaTime,player);

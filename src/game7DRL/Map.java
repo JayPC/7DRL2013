@@ -89,7 +89,7 @@ public class Map {
 		for(int i = 0; i <= tileMap[0].length-1; i++){
 			for(int c = 0; c <= tileMap.length-1; c++){
 				if(tileMap[c][i] != null){
-					if(tileMap[c][i].hasCollision){
+					if(tileMap[c][i].hasBulletCollision){
 						collWidth = tileMap[c][i].getWidth();
 						collHeight = tileMap[c][i].getHeight();
 						rectX = mapX*GameplayState.MAP_WIDTH+(c*collWidth);

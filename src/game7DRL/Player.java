@@ -122,22 +122,22 @@ public class Player {
 	public void render(Graphics g){
 		playerImage.setRotation(rotation+90);
 		g.drawImage(playerImage, x-16-Game.cam.cameraX, y-16-Game.cam.cameraY);
-		g.translate(-Game.cam.cameraX, -Game.cam.cameraY);
-		g.draw(xAxisRect);
-		g.draw(yAxisRect);
-		g.draw(moveLine);
-		g.draw(playerCross);
-		g.resetTransform();
+		//g.translate(-Game.cam.cameraX, -Game.cam.cameraY);
+		//g.draw(xAxisRect);
+		//g.draw(yAxisRect);
+		//g.draw(moveLine);
+		//g.draw(playerCross);
+		//g.resetTransform();
 	}
 	
 	public void renderHUD(Graphics g){
 		g.setColor(Color.white);
 		//g.drawString("" + health, 0, Game.cam.height-50);
-		g.drawString("" + x/32, 100, Game.cam.height-70);
-		g.drawString("" + y/32, 200, Game.cam.height-70);
-		g.drawString("" + x, 100, Game.cam.height-50);
-		g.drawString("" + y, 200, Game.cam.height-50);
-		g.drawString("" + health, Game.cam.width-150, 50);
+		//g.drawString("" + x/32, 100, Game.cam.height-70);
+		//g.drawString("" + y/32, 200, Game.cam.height-70);
+		//g.drawString("" + x, 100, Game.cam.height-50);
+		//g.drawString("" + y, 200, Game.cam.height-50);
+		//g.drawString("" + health, Game.cam.width-150, 50);
 		g.drawImage(Game.loadedResources.healthBack,Game.cam.width-205,15,Game.cam.width-95,40,0,0,120,24);
 		for(int i = 0; i <= (health/50);i++){
 			g.drawImage(Game.loadedResources.healthBar,i+Game.cam.width-200,20,i+Game.cam.width-199,35,0,0,1,50);
