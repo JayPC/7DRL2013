@@ -27,6 +27,7 @@ public class Player {
 	float speed;
 	float rotation;
 	boolean up,down,left,right;
+	boolean triggerDown = false;
 	Rectangle playerRect;
 	Rectangle xAxisRect;
 	Rectangle yAxisRect;
@@ -63,6 +64,7 @@ public class Player {
 		down = false;
 		left = false;
 		right = false;
+		triggerDown = false;
 		
 		playerRect = new Rectangle(x,y,playerImage.getWidth(), playerImage.getHeight());
 		xAxisRect = new Rectangle(x,y,playerImage.getWidth()-5, playerImage.getHeight()-5);
@@ -83,7 +85,6 @@ public class Player {
 
 		hunger = 10000;
 		health = 5000;
-		System.out.println("Setting Health at Max = " + health);
 		battery = 0;
 		
 		boolean xOk = false;
@@ -148,6 +149,7 @@ public class Player {
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 			GameplayState.gameWorld.playerFireBullet(deltaTime, this);
 		}else{
+			
 		}
 	}
 	
@@ -168,12 +170,10 @@ public class Player {
 			movementVector.y = directionAmount;
 		}else{
 		}
-			
 		if(input.isKeyDown(Input.KEY_D)){
 			movementVector.x = directionAmount;
 		}else{
 		}
-			
 		magnitude  = (float) Math.sqrt(Math.pow(movementVector.x, 2) +
 				Math.pow(movementVector.y, 2));
 		if(magnitude != 0){
@@ -206,13 +206,13 @@ public class Player {
 	public void rotation(){
 		float mX = input.getMouseX()+Game.cam.cameraX;
 		float mY = input.getMouseY()+Game.cam.cameraY;
-		
+		float degrees = 0;
 		float radiansToMouse = (float) Math.atan2(y-mY, x-mX);
-		float degreesToMouse = 57.2957795f*radiansToMouse;
-
-		currentDirection = new Vector2f((float)Math.cos(degreesToMouse), (float)Math.sin(degreesToMouse));
+		degrees = 57.2957795f*radiansToMouse;
 		
-		rotation = degreesToMouse;
+		currentDirection = new Vector2f((float)Math.cos(degrees), (float)Math.sin(degrees));
+		
+		rotation = degrees;
 
 		//System.out.println(rotation);
 	}

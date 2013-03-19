@@ -23,6 +23,11 @@ public class GameMath {
 		return radians;
 	}
 	
+	public static float angleToPointRadians(float x, float y){
+		float radians = (float) Math.atan2(0-y, 0-x);
+		return radians;
+	}
+	
 	/*	Returns a angle that measures the real angle from the origin to the
 	 *  destination, positive for clockwise, negative for counter-clockwise.
 	 * 

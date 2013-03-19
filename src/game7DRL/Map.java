@@ -5,13 +5,10 @@ import java.util.List;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.GeomUtil;
-import org.newdawn.slick.geom.GeomUtil.HitResult;
 import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tests.GeomTest;
-import org.newdawn.slick.tests.GeomUtilTest;
 
 public class Map {
 	int timeOfDay;
