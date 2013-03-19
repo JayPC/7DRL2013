@@ -1,12 +1,17 @@
 package game7DRL;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.GeomUtil;
+import org.newdawn.slick.geom.GeomUtil.HitResult;
 import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.tests.GeomTest;
+import org.newdawn.slick.tests.GeomUtilTest;
 
 public class Map {
 	int timeOfDay;
@@ -15,7 +20,9 @@ public class Map {
 	int zombiePopulation = 0;
 	int mapX;
 	int mapY;
-	GeomUtil util;
+	GeomUtil util = new GeomUtil();
+
+	Line testLine = new Line(0,0,0,0);
 	
 	public ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	
@@ -35,6 +42,7 @@ public class Map {
 				}
 			}	
 		}
+		g.draw(testLine);
 	}
 	
 	
@@ -48,7 +56,7 @@ public class Map {
 		int rectX;
 		int rectY;
 		boolean testBoolean = false;
-		//System.out.print("mapX: "+mapX+" MapY: "+mapY);
+		
 		for(int i = 0; i <= tileMap[0].length-1; i++){
 			for(int c = 0; c <= tileMap.length-1; c++){
 				if(tileMap[c][i] != null){
@@ -68,17 +76,16 @@ public class Map {
 				}
 			}
 		}
-		//System.out.println("" + testBoolean);
 		return testBoolean;
 	}
 	
-	public Vector2f checkMapLineCollision(Line collisionShape){
+	public Vector2f checkMapLineCollision(Line collisionLine){
 		int collWidth;
 		int collHeight;
 		int rectX;
 		int rectY;
-		boolean testBoolean = false;
-		//System.out.print("mapX: "+mapX+" MapY: "+mapY);
+		Vector2f testPoint = null;
+		List<Vector2f> intersectionList = new ArrayList<Vector2f>();
 		for(int i = 0; i <= tileMap[0].length-1; i++){
 			for(int c = 0; c <= tileMap.length-1; c++){
 				if(tileMap[c][i] != null){
@@ -89,15 +96,42 @@ public class Map {
 						rectY = mapY*GameplayState.MAP_HEIGHT+(i*collHeight);
 						Rectangle temp = new Rectangle(rectX, rectY, collWidth,collHeight);
 						
-						if(collisionShape.intersects(temp)){
-							testBoolean = true;
+						if(util.intersect(temp,collisionLine) != null){
+							testPoint = (util.intersect(temp,collisionLine).pt);
+							intersectionList.add(testPoint);
 						}
 					}
 				}
 			}
 		}
-		//System.out.println("" + testBoolean);
+		Vector2f shortestPoint = null;
+		Vector2f test = null;
+		
+		if(intersectionList.size() > 0){
+			
+			float shortestDistance = 100000;
+			for(int i = 0; i <= intersectionList.size()-1; i++){
+				test = intersectionList.get(i);
+				if(collisionLine.getStart().distance(test) < shortestDistance){
+					shortestDistance = collisionLine.getStart().distance(test);
+					shortestPoint = test.copy();
+				}
+				
+			}
+			return shortestPoint;
+		}
+		
+		
+		
+		
 		return null;
+	}
+	
+	public Line flipLine(Line inputLine){
+		Line outputLine = new Line(0,0,0,0);
+		outputLine.getStart().set(inputLine.getEnd());
+		outputLine.getEnd().set(inputLine.getStart());
+		return outputLine;
 	}
 	
 	public void checkBulletCollision(Bullet addBullet){

@@ -71,7 +71,7 @@ public class World {
 				}
 			}
 		}
-		addZombies(player);
+		//addZombies(player);
 		updateZombies(deltaTime,player);
 		updateBullets(deltaTime,player);
 		checkZombiePlayerCollision(deltaTime,player);
@@ -80,7 +80,6 @@ public class World {
 	
 	public boolean worldCollision(Shape collisionShape){
 		boolean test = false;
-		
 		for(int i = currentMapY-2; i<= currentMapY+2; i++){
 			for(int c = currentMapX-2; c <= currentMapX+2; c++){
 				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == false){
@@ -92,16 +91,15 @@ public class World {
 		}
 		return test;
 	}
-	public boolean worldCollision(Line collisionShape){
-		boolean test = false;
+	public Vector2f worldBulletCollision(Line collisionShape){
+		Vector2f test = null;
 		
 		for(int i = currentMapY-2; i<= currentMapY+2; i++){
 			for(int c = currentMapX-2; c <= currentMapX+2; c++){
-				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == false){
-					//System.out.println(test);
-					test = gameMaps.get("X"+(c)+"Y"+(i)).checkMapRectCollision(collisionShape);
+				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == null){
+					test = gameMaps.get("X"+(c)+"Y"+(i)).checkMapLineCollision(collisionShape);
 				}else{
-					System.out.println("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+					
 				}
 			}
 		}
@@ -109,7 +107,20 @@ public class World {
 	}
 	
 	public void playerFireBullet(int deltaTime, Player playerNum){
-		bulletList.add(new Bullet(playerNum.location.copy(),playerNum.gunRange,(float) (Math.toRadians(playerNum.rotation)-Math.PI)));
+		Vector2f start = playerNum.location.copy();
+		Vector2f end;
+		end = GameMath.pointFromDistanceAndAngle(playerNum.gunRange, (float) (Math.toRadians(playerNum.rotation)-Math.PI));
+		end = new Vector2f(start.x+end.x,start.y+end.y);
+		Line bulletT = new Line(start, end);
+		Vector2f test = null;
+		
+		if((test = worldBulletCollision(bulletT)) !=null){
+			end = test.copy();
+			bulletT.getEnd().set(end);
+		}else{
+			
+		}
+		bulletList.add(new Bullet(bulletT));
 	}
 	
 	public void renderZombies(Graphics g){

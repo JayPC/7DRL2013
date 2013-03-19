@@ -14,10 +14,17 @@ public class Bullet {
 	float angle = 0.0f;
 	
 	public Bullet(Vector2f start, float distance, float angle){
+		System.out.println(angle);
 		end = GameMath.pointFromDistanceAndAngle(distance, angle);
 		end = new Vector2f(start.x+end.x,start.y+end.y);
 		bulletT = new Line(start, end);
 		this.start = start;
+	}
+	
+	public Bullet(Line bulletLine){
+		bulletT = bulletLine;
+		start = bulletT.getStart();
+		end = bulletT.getEnd();
 	}
 	
 	public void bulletCollision(int deltaTime,int minDamage, int damageScale, Zombie nearestZombie){
@@ -34,11 +41,13 @@ public class Bullet {
 		 *deltaTime = 20 LowTimePerFrame
 		 *decayTime = 1000/20 = 50 decay per update
 		 *deltaTime = 80 HighTimePerFrame
-		 *decayTime = 1000/80 = 12.5 decay per update
+		 *decayTime = 1000/80 dws= 12.5 decay per update
 		 */
 		//System.out.println(deltaTime);
 		deltaTime /= 100;
-		if(deltaTime >= 5){
+		if(deltaTime >= 20){
+			liveTime-=(decayAmmount/20);
+		}else if(deltaTime <= 5){
 			liveTime-=(decayAmmount/5);
 		}else{
 			liveTime-=(decayAmmount/deltaTime);

@@ -188,7 +188,7 @@ public class Player {
 			if(GameplayState.gameWorld.worldCollision(xAxisRect) != true){
 				x+=xVel;
 			}else{
-				System.out.println("X Collision True, You should Be colliding");
+				
 			}
 			if(GameplayState.gameWorld.worldCollision(yAxisRect) != true){
 				y+=yVel;
