@@ -1,12 +1,8 @@
 package game7DRL;
 
-import java.util.Hashtable;
-
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -36,7 +32,7 @@ public class GameplayState extends BasicGameState{
 			throws SlickException {
 		
 		gameWorld = new World(20,20);
-		player1 = new Player(gc, 80, 80);
+		player1 = new Player(80, 80);
 		
 	}
 
@@ -54,7 +50,7 @@ public class GameplayState extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int deltaTime)
 			throws SlickException {
-		player1.update(deltaTime);
+		player1.update(gc, deltaTime);
 		//gameMap.update(deltaTime, player1);
 		
 		currentMapX = (int) Math.floor(player1.location.x/MAP_WIDTH);
@@ -65,7 +61,7 @@ public class GameplayState extends BasicGameState{
 		gameWorld.updateWorld(deltaTime, player1, currentMapX, currentMapY);
 		
 		if(player1.health <= 0){
-			System.out.println("Entering State: " + Game.state_gameover.getID());
+			System.out.println("Entering State: "+ Game.state_gameover.getID());
 			sbg.enterState(Game.state_gameover.getID());
 		}
 		

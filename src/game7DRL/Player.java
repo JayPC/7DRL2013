@@ -5,13 +5,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Player {
 	Input input;
-	float cameraX, cameraY;
-	float cameraW, cameraH;
 	float x, y;
 	Vector2f location = new Vector2f(0,0);
 	Vector2f offsetLocation = new Vector2f(0,0);
@@ -27,12 +26,10 @@ public class Player {
 	float speed = 5;
 	float rotation = 0;
 	boolean up,down,left,right;
-	float gunX, gunY; // the tip of the gun so bullets come out in the right direction.
-
-	Vector2f gunTip = new Vector2f(0,0);
 	Rectangle playerRect;
 	Rectangle xAxisRect;
 	Rectangle yAxisRect;
+	Line moveLine;
 	
 	Image playerImage = Game.loadedResources.player;
 	
@@ -42,16 +39,42 @@ public class Player {
 	int health = 5000;
 	int battery = 0;
 	
-	public Player(GameContainer gc, int x, int y){
+	public Player(int x, int y){
+
 		this.x = x;
 		this.y = y;
-		input = gc.getInput();
-		cameraH = gc.getHeight();
-		cameraW = gc.getWidth();
+		
+		location = new Vector2f(x,y);
+		offsetLocation = new Vector2f(x-Game.cam.cameraX,y-Game.cam.cameraY);
+		movementVector = new Vector2f(0,0);
+		currentDirection = new Vector2f(0,0);
+
+		currentMinDamage = 10;
+		currentScaleDamage = 100;
+		gunRange = 400;
+		
+		directionAmount = 1;
+		magnitude = 0f;
+		speed = 5;
+		rotation = 0;
+		up = false;
+		down = false;
+		left = false;
+		right = false;
+		
 		playerRect = new Rectangle(x,y,playerImage.getWidth(), playerImage.getHeight());
 		xAxisRect = new Rectangle(x,y,playerImage.getWidth()-5, playerImage.getHeight()-5);
 		yAxisRect = new Rectangle(x,y,playerImage.getWidth()-5, playerImage.getHeight()-5);
-		gunTip.set(gunX, gunY);
+		moveLine = new Line(0,0,0,0);
+		playerImage = Game.loadedResources.player;
+		
+		acuracy = 0;
+
+		hunger = 10000;
+		health = 5000;
+		System.out.println("Setting Health at Max = " + health);
+		battery = 0;
+		
 		boolean xOk = false;
 		boolean yOk = false;
 		while(xOk == false && yOk == false){
@@ -72,7 +95,8 @@ public class Player {
 		}
 	}
 	
-	public void update(int deltaTime){
+	public void update(GameContainer gc ,int deltaTime){
+		input = gc.getInput();
 		movement(deltaTime);
 		shoot(deltaTime);
 		rotation();
@@ -159,8 +183,6 @@ public class Player {
 		float radiansToMouse = (float) Math.atan2(y-mY, x-mX);
 		float degreesToMouse = 57.2957795f*radiansToMouse;
 
-		gunTip.x = location.x+GameMath.pointFromDistanceAndAngle(degreesToMouse,16f).x;
-		gunTip.y = location.y+GameMath.pointFromDistanceAndAngle(degreesToMouse,16f).y;
 		currentDirection = new Vector2f((float)Math.cos(degreesToMouse), (float)Math.sin(degreesToMouse));
 		
 		rotation = degreesToMouse;
@@ -184,7 +206,8 @@ public class Player {
 		if(GameplayState.gameWorld.worldCollision(yAxisRect) != true){
 			location.y-=yVel;
 		}
-		
+
+		System.out.println("Still Damaging Player");
 		health -= (Math.random()*damageScale)+minDamage;
 	}
 }

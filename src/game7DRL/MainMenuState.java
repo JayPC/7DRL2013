@@ -1,6 +1,5 @@
 package game7DRL;
 
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -38,10 +37,10 @@ public class MainMenuState extends BasicGameState{
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int deltaTime)
 			throws SlickException {
-		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+		Input input = gc.getInput();
+		if(input.isKeyDown(Input.KEY_ESCAPE)){
 				gc.exit();
 		}
-		Input input = gc.getInput();
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 			System.out.println("Entering State: " + Game.state_gameover.getID());
 			sbg.enterState(Game.state_gameplay.getID());

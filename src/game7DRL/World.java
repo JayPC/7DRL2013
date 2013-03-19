@@ -2,9 +2,6 @@ package game7DRL;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -16,9 +13,7 @@ public class World {
 	int points = 0;
 	int MapTileWidth;
 	int MapTileHeight;
-	private List<Light> lights = new ArrayList<Light>();
 	public ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
-	private Color sharedColor = new Color(1f, 1f, 1f, 1f);
 	int currentMapX = 0;
 	int currentMapY = 0;
 	int zombiePopulation = 30;
@@ -32,11 +27,10 @@ public class World {
 		 this.MapTileWidth = MapTileWidth;
 		 this.MapTileHeight = MapTileHeight;
 		 initWorld();
+		 bulletList = new ArrayList<Bullet>();
 	}
 	
 	public void initWorld(){
-		lights.clear();
-		lights.add(new Light(0, 0, 1f));
 		
 		for(int i = -2; i<= 2; i++){
 			for(int c = -2; c <= 2; c++){
