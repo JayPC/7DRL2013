@@ -16,7 +16,6 @@ public class GameplayState extends BasicGameState{
 	UltraBadLightingSystem lighting = new UltraBadLightingSystem();
 	int currentMapX = 0;
 	int currentMapY = 0;
-	Minimap mip;
 	int id;
 	
 	public static World gameWorld;
