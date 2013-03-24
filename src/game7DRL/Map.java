@@ -19,9 +19,10 @@ public class Map {
 	int mapY;
 	GeomUtil util = new GeomUtil();
 
-	Line testLine = new Line(0,0,0,0);
-	
+
 	public ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
+	public ArrayList<Tile> collisionList = new ArrayList<Tile>();
+	public ArrayList<Tile> bulletCollsionList = new ArrayList<Tile>();
 	
 	public Map(int buildingPopulation, int zombiePopulation, int width, int height, int sMapX, int sMapY){
 		this.zombiePopulation = zombiePopulation;
@@ -29,6 +30,18 @@ public class Map {
 		tileMap = new Tile[width][height];
 		mapX = sMapX;
 		mapY = sMapY;
+	}
+	
+	public void initCollisionList(){
+		for(int i = 0; i <= tileMap[0].length-1; i++){
+			for(int c = 0; c <= tileMap.length-1; c++){
+				if(tileMap[c][i] != null){
+					if(tileMap[c][i].hasCollision){
+						collisionList.add(tileMap[c][i]);
+					}
+				}
+			}	
+		}
 	}
 	
 	public void renderMap(Graphics g){
@@ -39,7 +52,6 @@ public class Map {
 				}
 			}	
 		}
-		g.draw(testLine);
 	}
 	
 	
