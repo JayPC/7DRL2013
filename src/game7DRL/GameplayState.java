@@ -11,8 +11,6 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameplayState extends BasicGameState{
 	Player player1;
 	int baseMaps;
-	final static int MAP_WIDTH = 640;
-	final static int MAP_HEIGHT = 640;
 	UltraBadLightingSystem lighting = new UltraBadLightingSystem();
 	int currentMapX = 0;
 	int currentMapY = 0;
@@ -24,7 +22,12 @@ public class GameplayState extends BasicGameState{
 	
 	public GameplayState(int sID){
 		id = sID;
-		gameWorld = new World(20,20);
+		try {
+			gameWorld = new World(20,20);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		player1 = new Player(80, 80);
 	}
 	
@@ -49,12 +52,17 @@ public class GameplayState extends BasicGameState{
 			throws SlickException {
 		player1.update(gc, deltaTime);
 		
-		currentMapX = (int) Math.floor(player1.location.x/MAP_WIDTH);
-		currentMapY = (int) Math.floor(player1.location.y/MAP_HEIGHT);
+		currentMapX = (int) Math.floor(player1.location.x/Defaults.MAP_WIDTH);
+		currentMapY = (int) Math.floor(player1.location.y/Defaults.MAP_HEIGHT);
 
 		lighting.update(new Vector2f(player1.offsetLocation.x-(lighting.imageWidth/2),
 				player1.offsetLocation.y-(lighting.imageHeight/2)));
-		gameWorld.updateWorld(deltaTime, player1, currentMapX, currentMapY);
+		try {
+			gameWorld.updateWorld(deltaTime, player1, currentMapX, currentMapY);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if(player1.health <= 0){
 			System.out.println("Entering State: "+ Game.state_gameover.getID());

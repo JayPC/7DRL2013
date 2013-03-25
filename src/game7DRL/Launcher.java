@@ -18,7 +18,7 @@ public class Launcher {
 		int height = (int) screenSize.getHeight();
 		AppGameContainer app = 
 				new AppGameContainer(new Game("Shadows of Humanity"));
-		app.setDisplayMode(width, height, true);
+		app.setDisplayMode(width-100, height-100, false);
 		app.setAlwaysRender(false);
 		app.setUpdateOnlyWhenVisible(true);
 		app.setMaximumLogicUpdateInterval(20);

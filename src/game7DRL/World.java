@@ -32,10 +32,11 @@ public class World {
 	}
 	
 	public void initWorld(){
-		
-		for(int i = -2; i<= 2; i++){
-			for(int c = -2; c <= 2; c++){
+		for(int i = -1; i<= 1; i++){
+			for(int c = -1; c <= 1; c++){
 				gameMaps.put("X"+(c)+"Y"+(i),MapLoader.initMap(new Map(20,0,MapTileWidth,MapTileHeight,c,i)));
+				gameMaps.get("X"+(c)+"Y"+(i)).initCollisionList();
+				gameMaps.get("X"+(c)+"Y"+(i)).initTileLocations();
 			}
 		}
 	}
@@ -43,8 +44,8 @@ public class World {
 	public void renderWorld(Graphics g){
 		
 		g.setDrawMode(Graphics.MODE_NORMAL);
-		for(int i = currentMapY-2; i<= currentMapY+2; i++){
-			for(int c = currentMapX-2; c <= currentMapX+2; c++){
+		for(int i = currentMapY-1; i<= currentMapY+1; i++){
+			for(int c = currentMapX-1; c <= currentMapX+1; c++){
 				gameMaps.get("X"+(c)+"Y"+(i)).renderMap(g);
 			}
 		}
@@ -61,15 +62,18 @@ public class World {
 		currentMapX = sCurrentMapX;
 		currentMapY = sCurrentMapY;
 		
-		for(int i = currentMapY-2; i<= currentMapY+2; i++){
-			for(int c = currentMapX-2; c <= currentMapX+2; c++){
+		for(int i = currentMapY-1; i<= currentMapY+1; i++){
+			for(int c = currentMapX-1; c <= currentMapX+1; c++){
 				if(gameMaps.get("X"+(c)+"Y"+(i)) != null){
 					gameMaps.get("X"+(c)+"Y"+(i)).update(deltaTime, player);
 				}else{
 					gameMaps.put("X"+(c)+"Y"+(i),MapLoader.initMap(new Map(20,5,MapTileWidth,MapTileHeight,c,i)));
+					gameMaps.get("X"+(c)+"Y"+(i)).initCollisionList();
+					gameMaps.get("X"+(c)+"Y"+(i)).initTileLocations();
 				}
 			}
 		}
+		
 		addZombies(player);
 		updateZombies(deltaTime,player);
 		updateBullets(deltaTime,player);
@@ -79,8 +83,8 @@ public class World {
 	
 	public boolean worldCollision(Shape collisionShape){
 		boolean test = false;
-		for(int i = currentMapY-2; i<= currentMapY+2; i++){
-			for(int c = currentMapX-2; c <= currentMapX+2; c++){
+		for(int i = currentMapY-1; i<= currentMapY+1; i++){
+			for(int c = currentMapX-1; c <= currentMapX+1; c++){
 				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == false){
 					test = gameMaps.get("X"+(c)+"Y"+(i)).checkMapRectCollision(collisionShape);
 				}else{
@@ -93,8 +97,8 @@ public class World {
 	public Vector2f worldBulletCollision(Line collisionShape){
 		Vector2f test = null;
 		
-		for(int i = currentMapY-2; i<= currentMapY+2; i++){
-			for(int c = currentMapX-2; c <= currentMapX+2; c++){
+		for(int i = currentMapY-1; i<= currentMapY+1; i++){
+			for(int c = currentMapX-1; c <= currentMapX+1; c++){
 				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == null){
 					test = gameMaps.get("X"+(c)+"Y"+(i)).checkMapLineCollision(collisionShape);
 				}else{

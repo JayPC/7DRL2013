@@ -149,17 +149,18 @@ public class MapLoader {
 		for(int i=0; i<=newPopMap.populationDensity; i++){
 			 newMap = populateMap(newPopMap);
 		}
-
-		
 		
 		for(int i = 0; i<= newMap.tileMap[0].length-1; i++){
 			for(int c = 0; c<= newMap.tileMap.length-1; c++){
 				if(newMap.tileMap[c][i] == null){
-				newMap.tileMap[c][i] = Game.loadedMapResources.allTiles.get(1);
+				newMap.tileMap[c][i] =  new Tile(Game.loadedMapResources.allTiles.get(1));
 				}
 				//Fill in any un-populated holes with standard grass
 			}	
 		}
+		
+		
+		
 		return newMap;
 	}
 	
@@ -173,8 +174,9 @@ public class MapLoader {
 				if(preCheck == false){
 					for(int z = 0; z <= temp.partTiles[0].length-1; z++){
 						for(int c = 0; c <= temp.partTiles.length-1; c++){
-							popMap.tileMap[c+locationX][z+locationY] = temp.partTiles[c][z];
-						
+							if(temp.partTiles[c][z] != null){
+								popMap.tileMap[c+locationX][z+locationY] = new Tile(temp.partTiles[c][z]);
+							}
 						}
 					}
 				}else{

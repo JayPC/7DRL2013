@@ -67,6 +67,7 @@ public class Zombie {
 
 		boolean xOk = false;
 		boolean yOk = false;
+		
 		while(xOk == false && yOk == false){
 			if(GameplayState.gameWorld.worldCollision(zombieCross)||
 					GameplayState.gameWorld.worldCollision(zombieRect)){
