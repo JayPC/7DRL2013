@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +74,9 @@ public class Map {
 	
 	public void update(int deltaTime, Player player){
 		
+	}
+	public ArrayList<Tile> getMapCollisionList(){
+		return collisionList;
 	}
 	
 	public boolean checkMapRectCollision(Shape collisionShape){

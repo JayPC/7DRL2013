@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -7,6 +7,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+import collisionSystem.CollisionHostility;
+import collisionSystem.CollisionSource;
+import collisionSystem.IsCollidable;
 
 public class World {
 	//the Key is X_Y_ where the blanks are filled with the mapCoordinates
@@ -17,10 +20,12 @@ public class World {
 	public ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	int currentMapX = 0;
 	int currentMapY = 0;
+	
 	int zombiePopulation = 30;
 	int zombieOffScreenDistance = 800;
 	int zombieCreationWindow = 200;
 	int zombieListCullingDistance = 600;
+	public ArrayList<IsCollidable> tempCollisionList = new ArrayList<IsCollidable>(); 
 	
 	public ArrayList<Zombie> zombieList = new ArrayList<Zombie>();
 	
@@ -55,7 +60,6 @@ public class World {
 
 	public void renderWorldHUD(Graphics g){
 		g.drawString("Points! - " + points,0,0);
-		
 	}
 	
 	public void updateWorld(int deltaTime, Player player, int sCurrentMapX, int sCurrentMapY){
@@ -77,8 +81,34 @@ public class World {
 		addZombies(player);
 		updateZombies(deltaTime,player);
 		updateBullets(deltaTime,player);
-		checkZombiePlayerCollision(deltaTime,player);
-		checkZombieBulletCollision(deltaTime,player);
+	}
+	
+	public boolean worldCollision(){
+		boolean test = false;
+		
+		tempCollisionList.add(GameplayState.player1);
+		
+		for(int i = currentMapY-1; i<= currentMapY+1; i++){
+			for(int c = currentMapX-1; c <= currentMapX+1; c++){
+				if(gameMaps.get("X"+(c)+"Y"+(i)) != null && test == false){
+					tempCollisionList.addAll(gameMaps.get("X"+(c)+"Y"+(i)).getMapCollisionList());
+				}else{
+					
+				}
+			}
+		}
+
+		for(int i = 0; i<= tempCollisionList.size()-1; i++){
+			for(int c = 0; c<= tempCollisionList.size()-1; c++){
+				if(c!=i){
+					
+				}
+			}
+		}
+		
+		
+		
+		return test;
 	}
 	
 	public boolean worldCollision(Shape collisionShape){
@@ -112,7 +142,7 @@ public class World {
 	public void playerFireBullet(int deltaTime, Player playerNum){
 		Vector2f start = playerNum.location.copy();
 		Vector2f end;
-		end = GameMath.pointFromDistanceAndAngle(playerNum.gunRange, (float) (Math.toRadians(playerNum.rotation)-Math.PI));
+		end = GameMath.pointFromDistanceAndAngle(Defaults.PLAYER_PISTOL_RANGE, (float) (Math.toRadians(playerNum.rotation)-Math.PI));
 		end = new Vector2f(start.x+end.x,start.y+end.y);
 		Line bulletT = new Line(start, end);
 		Vector2f test = null;
@@ -135,6 +165,7 @@ public class World {
 			bulletList.get(i).render(g);
 		}
 	}
+	
 	public void addZombies(Player player){
 		if(zombieList.size() <= zombiePopulation){
 			float num1 = (float) ((Math.random()*(zombieCreationWindow + zombieOffScreenDistance)+player.location.x) - ((zombieCreationWindow + zombieOffScreenDistance)/2));
@@ -144,7 +175,7 @@ public class World {
 				num1 = (float) ((Math.random()*(zombieCreationWindow + zombieOffScreenDistance)+player.location.x) - ((zombieCreationWindow + zombieOffScreenDistance)/2));
 				num2 =  (float) ((Math.random()*(zombieCreationWindow + zombieOffScreenDistance)+player.location.y) - ((zombieCreationWindow + zombieOffScreenDistance)/2));
 				newZombieLocation.set(num1, num2);
-			}
+			}		
 			zombieList.add(new Zombie(num1, num2, 100, Game.loadedResources.zombies[(int) Math.floor(Math.random()*4)]));
 		}
 	}
@@ -165,7 +196,8 @@ public class World {
 				zombieList.remove(i);
 			} 
 		}
-	}public void updateBullets(int deltaTime, Player player){
+	}
+	public void updateBullets(int deltaTime, Player player){
 		for(int c=0; c <= bulletList.size()-1; c++){
 			Bullet tempBullet = bulletList.get(c);
 			
@@ -177,27 +209,6 @@ public class World {
 			}
 		}
 	}
-	public void checkZombieBulletCollision(int deltaTime, Player player){
-		for(int i=0; i<= zombieList.size()-1; i++){
-			Zombie temp = zombieList.get(i);
-			for(int c=0; c <= bulletList.size()-1; c++){
-				Bullet tempBullet = bulletList.get(c);
-				if(temp.checkCollision(tempBullet.bulletT)){
-					temp.damageZombie(deltaTime, player.currentMinDamage, player.currentScaleDamage);
-				}
-			}
-		}
-	}
-	public void checkZombiePlayerCollision(int deltaTime, Player player){
-		for(int i=0; i<= zombieList.size()-1; i++){
-			Zombie temp = zombieList.get(i);
-			if(temp.checkCollision(player.playerRect)){
-				player.damagePlayer(deltaTime,temp.minDamage, temp.damageScale);
-			}
-		}
-	}
-	
-	
 	
 }
 

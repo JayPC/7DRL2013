@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;

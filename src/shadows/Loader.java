@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import java.io.IOException;
 import org.newdawn.slick.Image;

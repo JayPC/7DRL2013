@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import org.newdawn.slick.geom.Vector2f;
 

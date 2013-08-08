@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 public class Container {
 	int x;

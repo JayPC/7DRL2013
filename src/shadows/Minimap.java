@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

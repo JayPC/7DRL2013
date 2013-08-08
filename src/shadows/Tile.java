@@ -1,12 +1,16 @@
-package game7DRL;
+package shadows;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.geom.Shape;
+
+import collisionSystem.CollisionHostility;
+import collisionSystem.CollisionSource;
+import collisionSystem.IsCollidable;
 
 
-public class Tile{
+public class Tile implements IsCollidable{
 	int tileID;
 	int x = 0;
 	int y = 0;
@@ -68,5 +72,26 @@ public class Tile{
 		if(aboveTile != null){
 			g.drawImage(aboveTile, x, y);
 		}
+	}
+	
+	@Override
+	public CollisionSource getCollisionType() {
+		return null;
+	}
+	@Override
+	public CollisionHostility getCollisionHostilityType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Shape getCollisionShape() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void collisionReaction(CollisionSource ct, CollisionHostility ch,
+			Shape cs) {
+		// TODO Auto-generated method stub
+		
 	}
 }

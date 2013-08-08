@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Line;
@@ -25,10 +25,6 @@ public class Bullet {
 		bulletT = bulletLine;
 		start = bulletT.getStart();
 		end = bulletT.getEnd();
-	}
-	
-	public void bulletCollision(int deltaTime,int minDamage, int damageScale, Zombie nearestZombie){
-		nearestZombie.damageZombie(deltaTime, minDamage, damageScale);
 	}
 	
 	public void render(Graphics g){

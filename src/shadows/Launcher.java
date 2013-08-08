@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;

@@ -1,4 +1,4 @@
-package game7DRL;
+package shadows;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
@@ -9,14 +9,13 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameplayState extends BasicGameState{
-	Player player1;
-	int baseMaps;
+	static Player player1;
+	public static World gameWorld;
 	UltraBadLightingSystem lighting = new UltraBadLightingSystem();
 	int currentMapX = 0;
 	int currentMapY = 0;
 	int id;
 	
-	public static World gameWorld;
 	
 	//public static Map gameMap = new Map(500,50,20,20,0,0);
 	
@@ -42,7 +41,7 @@ public class GameplayState extends BasicGameState{
 			throws SlickException {
 		gameWorld.renderWorld(g);
 		player1.render(g);
-		lighting.render(g);
+		//lighting.render(g);
 		player1.renderHUD(g);
 		gameWorld.renderWorldHUD(g);
 	}
@@ -55,8 +54,8 @@ public class GameplayState extends BasicGameState{
 		currentMapX = (int) Math.floor(player1.location.x/Defaults.MAP_WIDTH);
 		currentMapY = (int) Math.floor(player1.location.y/Defaults.MAP_HEIGHT);
 
-		lighting.update(new Vector2f(player1.offsetLocation.x-(lighting.imageWidth/2),
-				player1.offsetLocation.y-(lighting.imageHeight/2)));
+		lighting.update(new Vector2f(player1.x-400-(lighting.imageWidth/2),
+				player1.y-400-(lighting.imageHeight/2)));
 		try {
 			gameWorld.updateWorld(deltaTime, player1, currentMapX, currentMapY);
 		} catch (Exception e) {

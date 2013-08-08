@@ -1,0 +1,13 @@
+package collisionSystem;
+
+public enum CollisionSource{
+	WALL, 
+	PLAYER, 
+	ZOMBIE_REGULAR_BITE, 
+	
+	ZOMBIE_SPITTER_BITE,
+	ZOMBIE_SPITTER_SPIT,
+	
+	ZOMBIE_BLASTER_BITE,
+	ZOMBIE_BLASTER_EXPLOSION;
+}
